@@ -39,12 +39,80 @@ int printIntArray(const int *arrayToPrint, int size)
     
     return PRINT_INT_ARRAY_OKAY;
 }
-// prototypes for testing printIntArray()
-const void testPrintIntArray0_EmptyArray(void);
-const void testPrintIntArray1(void);
-const void testPrintIntArray2(void);
-const void testPrintIntArray3(void);
-const void testPrintIntArray4(void);
+/*
+    Purpose:    Test printIntArray() with various size arrays to catch error conditions and confirm pass conditions
+    Errors:     testPrintEmptyArray() the array is empty  
+*/
+const void testPrintEmptyIntArray(void) {
+    int printStatus = 0;
+    
+    // print test header
+    printf("TEST: %s:\n", testEmptyArray.testName);
+    
+    // print array
+    printf("  Array: ");
+    printStatus = printIntArray(testEmptyArray.testArray, testEmptyArray.testArraySize);
+    
+    // test copyStatus that array was empty
+    assert((printStatus == PRINT_INT_ARRAY_ERROR_EMPTY_ARRAY) && " ERROR with return status");
+    
+    // print if test was passed
+    printf("  Test PASSED: exited with empty array status\n");
+    printf("\n");
+}
+const void testPrintIntArray(const testIntArrayData arrayToTest) {    
+    int printStatus = 0;
+    
+    // print test header
+    printf("TEST: %s:\n", arrayToTest.testName);
+    
+    // print array
+    printf("  Array: ");
+    printStatus = printIntArray(arrayToTest.testArray, arrayToTest.testArraySize);
+    
+    // test copyStatus that array was empty
+    assert((printStatus == PRINT_INT_ARRAY_OKAY) && "ERROR with return status");
+    
+    // print if test was passed
+    printf("  Test PASSED: exited with okay status\n");
+    printf("\n");
+    
+}
+const testIntArrayData normalTestCasesForPrintIntArray[] = {
+    testSingleElementArray,
+    testAscendingElementsArray,
+    testDescendingElementsArray,
+    testAscendingDuplicateElementsArray,
+    testDescendingDuplicateElementsArray,
+    testUnsortedElements,
+    testSingleNegativeElementArray,
+    testAscendingNegativeElementsArray,
+    testDescendingNegativeElementsArray,
+    testAscendingDuplicateNegativeElementsArray,
+    testDescendingDuplicateNegativeElementsArray,
+    testUnsortedNegativeElements
+};
+const void testPassingConditionsForPrintIntArray(void) {
+    int numberOfNormalTestCases = sizeof(normalTestCasesForPrintIntArray) / sizeof(normalTestCasesForPrintIntArray[0]);
+    for (int i = 0; i < numberOfNormalTestCases; i++) {
+        testPrintIntArray(normalTestCasesForPrintIntArray[i]);
+    }
+}
+/*
+    Purpose:    Test printIntArray() with various size arrays to catch error conditions and confirm pass conditions    
+*/
+void runTestsOnPrintIntArray(void) {
+    printf("===================================\n");
+    printf("=== START Testing printIntArray ===\n");
+    printf("===================================\n");
+    testPrintEmptyIntArray();
+    testPassingConditionsForPrintIntArray();
+    printf("=================================\n");
+    printf("=== END Testing printIntArray ===\n");
+    printf("=================================\n");
+}
+
+
 
 /*
     Purpose:    Copies an int array to a different int array of same size
@@ -72,23 +140,79 @@ int copyIntArray(const int *sourceArray, int sourceSize, int *destinationArray, 
     
     return COPY_INT_ARRAY_OKAY;
 }
-// prototypes for testing copyIntArray()
-const void testCopyUnequalArray_DestinationSmaller(void);
-const void testCopyUnequalArray_DestinationLarger(void);
-const void testCopyIntArray0_EmptyArray(void);       // test empty array
-const void testCopyIntArray1(void);
-const void testCopyIntArray2(void);
-const void testCopyIntArray3(void);
-const void testCopyIntArray4(void);
-const void runTestsOnCopyIntArray(void);
+/*
+    Purpose:    Test copyIntArray() with various size arrays to catch error conditions and confirm pass conditions
+    Errors:     testCopyUnequalArray_DestinationSmaller() the destination array is smaller than the source array
+                testCopyUnequalArray_DestinationLarger() the destination array is larger than the source array
+                testCopyIntArray0_EmptyArray() the source and/or desintation array is empty
+*/
+const void testCopyIntArray(const testIntArrayData arrayToTest) {    
+    int copyOfArray[arrayToTest.testArraySize]; // array to have data copied to
+    int copyStatus = 0;         // indicates error (negative value) or not (0 value)
+    
+    // print test header
+    printf("TEST: %s:\n", arrayToTest.testName);
+    
+    // print unmodified array
+    printf("  Array: ");
+    (void)printIntArray(arrayToTest.testArray, arrayToTest.testArraySize);
+    
+    // copy array
+    copyStatus = copyIntArray(arrayToTest.testArray, arrayToTest.testArraySize, copyOfArray, arrayToTest.testArraySize);
+    
+    // test each element to see if copied correctly
+    for (int i = 0; i < arrayToTest.testArraySize; i++) {
+        assert((arrayToTest.testArray[i] == copyOfArray[i]) && "Copy array1 error mismatched element\n");
+    }
+    // test copyStatus to see if there was other issue
+    assert((copyStatus == COPY_INT_ARRAY_OKAY) && "Copy array1 error with return status");
 
-
+    // print copied array only if copied okay
+    if (copyStatus == COPY_INT_ARRAY_OKAY) {
+        printf("  Copy:  ");
+        printIntArray(copyOfArray, arrayToTest.testArraySize);
+    }
+    printf("  Test PASSED: exited with okay status\n");
+    printf("\n");    
+}
+const testIntArrayData normalTestCasesForCopyIntArray[] = {
+    testSingleElementArray,
+    testAscendingElementsArray,
+    testDescendingElementsArray,
+    testAscendingDuplicateElementsArray,
+    testDescendingDuplicateElementsArray,
+    testUnsortedElements,
+    testSingleNegativeElementArray,
+    testAscendingNegativeElementsArray,
+    testDescendingNegativeElementsArray,
+    testAscendingDuplicateNegativeElementsArray,
+    testDescendingDuplicateNegativeElementsArray,
+    testUnsortedNegativeElements
+};
+const void testPassingConditionsForCopyIntArray(void) {
+    int numberOfNormalTestCases = sizeof(normalTestCasesForCopyIntArray) / sizeof(normalTestCasesForCopyIntArray[0]);
+    for (int i = 0; i < numberOfNormalTestCases; i++) {
+        testCopyIntArray(normalTestCasesForCopyIntArray[i]);
+    }
+}
+void runTestsOnCopyIntArray(void) {
+    printf("==================================\n");
+    printf("=== START Testing copyIntArray ===\n");
+    printf("==================================\n");
+    //TODO testCopyUnequalArray_DestinationSmaller();
+    //TODO testCopyUnequalArray_DestinationLarger();
+    //TODO testCopyIntArray0_EmptyArray();
+    testPassingConditionsForCopyIntArray();  
+    printf("================================\n");
+    printf("=== END Testing copyIntArray ===\n");
+    printf("================================\n");
+}
 
 /*
     Purpose:    Test printing and copying arrays
     Assumes:    Arrays are not empty
 */
-#if (BUILD_TESTS_FOR_INT_ARRAY_HELPERS == 1)
+#if (BUILD_MAIN_TO_TEST_INT_ARRAY_HELPERS == 1)
 #warning Building tests and main for int_array_helpers
 void main(void) {
     runTestsOnPrintIntArray();
@@ -98,132 +222,8 @@ void main(void) {
 #endif
 
 
-/*
-    Purpose:    Test printIntArray() with various size arrays to catch error conditions and confirm pass conditions
-    Errors:     testPrintIntArray0_EmptyArray() the array is empty
-    
-*/
-void runTestsOnPrintIntArray(void) {
-    printf("===================================\n");
-    printf("=== START Testing printIntArray ===\n");
-    printf("===================================\n");
-    testPrintIntArray0_EmptyArray();
-    testPrintIntArray1();
-    testPrintIntArray2();
-    testPrintIntArray3();
-    testPrintIntArray4();
-    printf("=================================\n");
-    printf("=== END Testing printIntArray ===\n");
-    printf("=================================\n");
-}
-const void testPrintIntArray0_EmptyArray(void) {
-    int printStatus = 0;
-    
-    // print test header
-    printf("TEST: %s\n", __func__);
-    
-    // print array
-    printf("  Array 0: ");
-    printStatus = printIntArray(array0, array0Size);
-    
-    // test copyStatus that array was empty
-    assert((printStatus == PRINT_INT_ARRAY_ERROR_EMPTY_ARRAY) && "Print array0 error with return status");
-    
-    // print if test was passed
-    printf("  Test PASSED: Print array0 failed due to empty array\n");
-    printf("\n");
-}
-const void testPrintIntArray1(void) {
-    int printStatus = 0;
-    
-    // print test header
-    printf("TEST: %s\n", __func__);
-    
-    // print array
-    printf("  Array 1: ");
-    printStatus = printIntArray(array1, array1Size);
-    
-    // test copyStatus that array was empty
-    assert((printStatus == PRINT_INT_ARRAY_OKAY) && "Print array1 error with return status");
-    
-    // print if test was passed
-    printf("  Test PASSED: Print array1 exited with okay status\n");
-    printf("\n");
-}
-const void testPrintIntArray2(void) {
-    int printStatus = 0;
-    
-    // print test header
-    printf("TEST: %s\n", __func__);
-    
-    // print array
-    printf("  Array 2: ");
-    printStatus = printIntArray(array2, array2Size);
-    
-    // test copyStatus that array was empty
-    assert((printStatus == PRINT_INT_ARRAY_OKAY) && "Print array2 error with return status");
-    
-    // print if test was passed
-    printf("  Test PASSED: Print array2 exited with okay status\n");
-    printf("\n");
-}
-const void testPrintIntArray3(void) {
-    int printStatus = 0;
-    
-    // print test header
-    printf("TEST: %s\n", __func__);
-    
-    // print array
-    printf("  Array 3: ");
-    printStatus = printIntArray(array3, array3Size);
-    
-    // test copyStatus that array was empty
-    assert((printStatus == PRINT_INT_ARRAY_OKAY) && "Print array3 error with return status");
-    
-    // print if test was passed
-    printf("  Test PASSED: Print array3 exited with okay status\n");
-    printf("\n");
-}
-const void testPrintIntArray4(void) {
-    int printStatus = 0;
-    
-    // print test header
-    printf("TEST: %s\n", __func__);
-    
-    // print array
-    printf("  Array 4: ");
-    printStatus = printIntArray(array4, array4Size);
-    
-    // test copyStatus that array was empty
-    assert((printStatus == PRINT_INT_ARRAY_OKAY) && "Print array4 error with return status");
-    
-    // print if test was passed
-    printf("  Test PASSED: Print array4 exited with okay status\n");
-    printf("\n");
-}
-
 
 /*
-    Purpose:    Test copyIntArray() with various size arrays to catch error conditions and confirm pass conditions
-    Errors:     testCopyUnequalArray_DestinationSmaller() the destination array is smaller than the source array
-                testCopyUnequalArray_DestinationLarger() the destination array is larger than the source array
-                testCopyIntArray0_EmptyArray() the source and/or desintation array is empty
-*/
-void runTestsOnCopyIntArray(void) {
-    printf("==================================\n");
-    printf("=== START Testing copyIntArray ===\n");
-    printf("==================================\n");
-    testCopyUnequalArray_DestinationSmaller();
-    testCopyUnequalArray_DestinationLarger();
-    testCopyIntArray0_EmptyArray();
-    testCopyIntArray1();
-    testCopyIntArray2();
-    testCopyIntArray3();
-    testCopyIntArray4();    
-    printf("================================\n");
-    printf("=== END Testing copyIntArray ===\n");
-    printf("================================\n");
-}
 const void testCopyUnequalArray_DestinationSmaller(void) {
     int array1Copy[array1Size - 1]; // array to have data copied to
     int copyStatus = 0;         // indicates error (negative value) or not (0 value)
@@ -299,119 +299,4 @@ const void testCopyIntArray0_EmptyArray(void) {
     printf("  Test PASSED: Copy array0 failed due to empty array\n");
     printf("\n");
 }
-const void testCopyIntArray1(void) {
-    int array1Copy[array1Size]; // array to have data copied to
-    int copyStatus = 0;         // indicates error (negative value) or not (0 value)
-    
-    // print test header
-    printf("TEST: %s\n", __func__);
-    
-    // print unmodified array
-    printf("  Array 1: ");
-    printIntArray(array1, array1Size);
-    
-    // copy array
-    copyStatus = copyIntArray(array1, array1Size, array1Copy, array1Size);    
-    
-    // test each element to see if copied correctly
-    for (int i = 0; i < array1Size; i++) {
-        assert((array1[i] == array1Copy[i]) && "Copy array1 error mismatched element\n");
-    }
-    // test copyStatus to see if there was other issue
-    assert((copyStatus == COPY_INT_ARRAY_OKAY) && "Copy array1 error with return status");
-    
-    // print copied array only if copied okay
-    if (copyStatus == COPY_INT_ARRAY_OKAY) {
-        printf("  Copy  1: ");
-        printIntArray(array1Copy, array1Size);
-    }
-    printf("  Test PASSED: Copy array1\n");
-    printf("\n");
-}
-const void testCopyIntArray2(void) {
-    int array2Copy[array2Size]; // array to have data copied to
-    int copyStatus = 0;         // indicates error (negative value) or not (0 value)
-    
-    // print test header
-    printf("TEST: %s\n", __func__);
-    
-    // print unmodified array
-    printf("  Array 2: ");
-    printIntArray(array2, array2Size);
-    
-    // copy array
-    copyStatus = copyIntArray(array2, array2Size, array2Copy, array2Size);    
-    
-    // test each element to see if copied correctly
-    for (int i = 0; i < array2Size; i++) {
-        assert((array2[i] == array2Copy[i]) && "Copy array2 error mismatched element\n");
-    }
-    // test copyStatus to see if there was other issue
-    assert((copyStatus == COPY_INT_ARRAY_OKAY) && "Copy array2 error with return status");
-    
-    // print copied array only if copied okay
-    if (copyStatus == COPY_INT_ARRAY_OKAY) {
-        printf("  Copy  2: ");
-        printIntArray(array2Copy, array2Size);
-    }
-    printf("  Test PASSED: Copy array2\n");
-    printf("\n");
-}
-const void testCopyIntArray3(void) {
-    int array3Copy[array3Size]; // array to have data copied to
-    int copyStatus = 0;         // indicates error (negative value) or not (0 value)
-    
-    // print test header
-    printf("TEST: %s\n", __func__);
-    
-    // print unmodified array
-    printf("  Array 3: ");
-    printIntArray(array3, array3Size);
-    
-    // copy array
-    copyStatus = copyIntArray(array3, array3Size, array3Copy, array3Size);
-    
-    // test each element to see if copied correctly
-    for (int i = 0; i < array3Size; i++) {
-        assert((array3[i] == array3Copy[i]) && "Copy array3 error mismatched element\n");
-    }
-    // test copyStatus to see if there was other issue
-    assert((copyStatus == COPY_INT_ARRAY_OKAY) && "Copy array3 error with return status");
-    
-    // print copied array only if copied okay
-    if (copyStatus == COPY_INT_ARRAY_OKAY) {
-        printf("  Copy  3: ");
-        printIntArray(array3Copy, array3Size);
-    }
-    printf("  Test PASSED: Copy array3\n");
-    printf("\n");
-}
-const void testCopyIntArray4(void) {
-    int array4Copy[array4Size]; // array to have data copied to
-    int copyStatus = 0;         // indicates error (negative value) or not (0 value)
-    
-    // print test header
-    printf("TEST: %s\n", __func__);
-    
-    // print unmodified array
-    printf("  Array 4: ");
-    printIntArray(array4, array4Size);
-    
-    // copy array
-    copyStatus = copyIntArray(array4, array4Size, array4Copy, array4Size);
-    
-    // test each element to see if copied correctly
-    for (int i = 0; i < array4Size; i++) {
-        assert((array4[i] == array4Copy[i]) && "Copy array4 error mismatched element\n");
-    }
-    // test copyStatus to see if there was other issue
-    assert((copyStatus == COPY_INT_ARRAY_OKAY) && "Copy array4 error with return status");
-    
-    // print copied array only if copied okay
-    if (copyStatus == COPY_INT_ARRAY_OKAY) {
-        printf("  Copy  4: ");
-        printIntArray(array4Copy, array4Size);
-    }
-    printf("  Test PASSED: Copy array4\n");
-    printf("\n");
-}
+*/

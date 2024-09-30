@@ -11,10 +11,10 @@
 #include <assert.h>
 
 // === Included User Defined files === //
-#include "..\int_test_arrays.h"
+#include "int_test_arrays.h"
 
 // === Compile Options === //
-#define BUILD_TESTS_FOR_INT_ARRAY_HELPERS 1
+#define BUILD_MAIN_TO_TEST_INT_ARRAY_HELPERS 1
 
 // === Function Declarations & Associated Return Status === //
 // Prints the contents of an integer array
@@ -30,7 +30,7 @@ void runTestsOnPrintIntArray(void);
 #define COPY_INT_ARRAY_ERROR_EMPTY_ARRAY    -1
 #define COPY_INT_ARRAY_ERROR_UNEQUAL_ARRAYS -2
 int copyIntArray(const int *sourceArray, int sourceSize, int *destinationArray, int destinationSize);
-void runTestsOnCopyIntArray(void);
+//TODO void runTestsOnCopyIntArray(void);
 
 
 
