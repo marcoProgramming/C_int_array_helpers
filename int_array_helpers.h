@@ -30,7 +30,7 @@ void runTestsOnPrintIntArray(void);
 #define COPY_INT_ARRAY_ERROR_EMPTY_ARRAY    -1
 #define COPY_INT_ARRAY_ERROR_UNEQUAL_ARRAYS -2
 int copyIntArray(const int *sourceArray, int sourceSize, int *destinationArray, int destinationSize);
-//TODO void runTestsOnCopyIntArray(void);
+void runTestsOnCopyIntArray(void);
 
 
 

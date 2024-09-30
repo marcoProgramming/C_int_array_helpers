@@ -38,6 +38,53 @@ int printIntArray(const int *arrayToPrint, int size)
     
     return PRINT_INT_ARRAY_OKAY;
 }
+
+
+
+/*
+    Purpose:    Copies an int array to a different int array of same size
+    Assumes:    Source array and destination array are of the same size
+                Array is not empty
+    Inputs:     int* sourceArray:       the array that will be copied
+                int sourceSize:         number of elements in the source array
+                int* destinationArray:  the array that will receive the copied data
+                int destinationSize:    number of elements in the destination array
+    Returns:    int value indicating if the copy succeeded or not
+                0:  indicates the copy completed
+                -1: indicates the arrays are not of the same size
+                -2: indicates the arrays are empty
+*/
+int copyIntArray(const int *sourceArray, int sourceSize, int *destinationArray, int destinationSize) {
+    // Check for arrays of unequal size and return error condition if found
+    if (sourceSize != destinationSize) return COPY_INT_ARRAY_ERROR_UNEQUAL_ARRAYS;
+    // Check for empty array and return error condition if found
+    if (sourceSize < 1) return COPY_INT_ARRAY_ERROR_EMPTY_ARRAY;
+    
+    // Copy each element from source to destinaton
+    for (int i = 0; i < sourceSize; i++) {
+        destinationArray[i] = sourceArray[i];
+    }
+    
+    return COPY_INT_ARRAY_OKAY;
+}
+
+
+
+/*
+    Purpose:    Test printing and copying arrays
+    Assumes:    Arrays are not empty
+*/
+#if (BUILD_MAIN_TO_TEST_INT_ARRAY_HELPERS == 1)
+#warning Building tests and main for int_array_helpers
+void main(void) {
+    runTestsOnPrintIntArray();
+    printf("\n\n\n");
+    runTestsOnCopyIntArray();
+}
+#endif
+
+
+
 /*
     Purpose:    Test printIntArray() with various size arrays to catch error conditions and confirm pass conditions
     Errors:     testPrintEmptyArray() the array is empty  
@@ -119,32 +166,6 @@ void runTestsOnPrintIntArray(void) {
 
 
 
-/*
-    Purpose:    Copies an int array to a different int array of same size
-    Assumes:    Source array and destination array are of the same size
-                Array is not empty
-    Inputs:     int* sourceArray:       the array that will be copied
-                int sourceSize:         number of elements in the source array
-                int* destinationArray:  the array that will receive the copied data
-                int destinationSize:    number of elements in the destination array
-    Returns:    int value indicating if the copy succeeded or not
-                0:  indicates the copy completed
-                -1: indicates the arrays are not of the same size
-                -2: indicates the arrays are empty
-*/
-int copyIntArray(const int *sourceArray, int sourceSize, int *destinationArray, int destinationSize) {
-    // Check for arrays of unequal size and return error condition if found
-    if (sourceSize != destinationSize) return COPY_INT_ARRAY_ERROR_UNEQUAL_ARRAYS;
-    // Check for empty array and return error condition if found
-    if (sourceSize < 1) return COPY_INT_ARRAY_ERROR_EMPTY_ARRAY;
-    
-    // Copy each element from source to destinaton
-    for (int i = 0; i < sourceSize; i++) {
-        destinationArray[i] = sourceArray[i];
-    }
-    
-    return COPY_INT_ARRAY_OKAY;
-}
 /*
     Purpose:    Test copyIntArray() with various size arrays to catch error conditions and confirm pass conditions
     Errors:     testCopyUnequalArray_DestinationSmaller() the destination array is smaller than the source array
@@ -282,16 +303,3 @@ void runTestsOnCopyIntArray(void) {
     printf("=== END Testing copyIntArray ===\n");
     printf("================================\n");
 }
-
-/*
-    Purpose:    Test printing and copying arrays
-    Assumes:    Arrays are not empty
-*/
-#if (BUILD_MAIN_TO_TEST_INT_ARRAY_HELPERS == 1)
-#warning Building tests and main for int_array_helpers
-void main(void) {
-    runTestsOnPrintIntArray();
-    printf("\n\n\n");
-    runTestsOnCopyIntArray();
-}
-#endif
